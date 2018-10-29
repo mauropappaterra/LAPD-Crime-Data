@@ -108,6 +108,7 @@ def fix_weapon_description (weapon_description):
 
     return weapon_description.title()\
         .replace("\"","")\
+        .replace("6Inches","6 Inches")\
         .replace("Strong-Arm (Hands -  Fist -  Feet Or Bodily Force)","Strong Bodily Force")
 
 def classify(entry_data):
@@ -123,7 +124,7 @@ def classify(entry_data):
     return "Non-Violent Crime"
 
 with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as myFile:
-    file_content = myFile.readline().replace("\r","").replace("\n","") + ", Classification" # first line
+    file_content = myFile.readline().replace("\r","").replace("\n","") #+ ", Classification" # first line
 
     labels = file_content.split(',')
     print(labels)
@@ -155,7 +156,7 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
             #print (weapon_description)
 
             # Classify Violent/Non-Violent
-            classification = classify(entry_data)
+            #classification = classify(entry_data)
             #print (classification)
 
             # Label Victim's Age
@@ -172,7 +173,7 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
 
             output = "\n" + entry_data[0] + "," + date_label + "," + time_label + "," + entry_data[3] + "," + entry_data[4] + "," \
                      + entry_data[5] + "," + crime_description + "," + entry_data[7] + "," + weapon_description + "," \
-                     + age_label + "," + gender_label  + "," + race_label + "," + classification
+                     + age_label + "," + gender_label  + "," + race_label #+ "," + classification
 
 
             file_content += output
