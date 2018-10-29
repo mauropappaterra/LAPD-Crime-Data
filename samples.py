@@ -1,13 +1,11 @@
 # Data Analysis
 # samples.py
 # Created by Mauro J. Pappaterra on 29 of October 2018.
-import os.path as p
-import codecs
 import time
 import sys
 from random import *
 
-# Ask user how many samples to create
+# Ask user how many samples to create and path to save file
 if (len(sys.argv) == 1):
     size = input("\nEnter no. of samples to create:")
     path = input("\nEnter path to save .csv file:")

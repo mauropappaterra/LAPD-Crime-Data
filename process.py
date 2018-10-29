@@ -1,7 +1,6 @@
 # Data Pre-processing
 # process.py
 # Created by Mauro J. Pappaterra on 19 of October 2018.
-import os.path as p
 import codecs
 import time
 import sys
