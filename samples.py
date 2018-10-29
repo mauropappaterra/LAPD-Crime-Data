@@ -90,9 +90,9 @@ start = time.clock() # start clock
 
 while (sample_index <= size):
     new_sample = get_dr_number(sample_index) + "," + get_date() + "," + get_time() + "," + get_area() + ",,," + get_weapon() + "," +get_age() + "," +get_gender() + "," +get_race()
-    print("=> " + new_sample)
-
     file_content += new_sample + "\n"
+
+    print("=> " + new_sample)
 
     sample_index += 1
 
