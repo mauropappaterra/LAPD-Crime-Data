@@ -14,24 +14,13 @@ else:
 if (path!= ""):
     print ("\nUsing path: " + path)
 
-months = {'1':'January', '2':'February', '3':'March', '4':'April', '5':'May', '6':'June', '7':'July', '8':'August', '9':'September', '10':'October', '11':'November', '12':'December'}
-
-violent = ["murder", "assault", "shots", "battery", "deadly", "violent", "kidnapping", "abuse",
-           "sexual", "sex", "lynching", "rape", "riot", "aggravated", "manslaughter", "homicide"]
-
-weapons = ["gun", "knife", "revolver","razor blade", "axe", "bottle", "cleaver", "machete","uzi", "ak47", "firearm", "club"]
-
 counter_in = 0
 counter_out = 0
 
 start = time.clock() # start clock
 file_content = ""
 
-def get_date_label (date):
-    return months[date[:2].replace("0","").replace("/","")]
-
 def get_time_label(time):
-
     if (len(time) == 3):
         time = '0' + time
     elif (len(time) == 2):
@@ -39,32 +28,10 @@ def get_time_label(time):
     elif (len(time) == 1):
         time = '0' + time + '00'
 
-    if (int(time)< 600):
-        return "Night"
-    elif (600 <= int(time) and int(time)< 1200):
-        return "Morning"
-    elif (1200 <= int(time) and int(time)< 1700):
-        return "Afternoon"
-    elif (1700 <= int(time) and int(time)< 2000):
-        return "Evening"
-    else:
-        return "Night"
+    return time
 
-def get_age_label(age):
-
-    if (int(age) <= 12):
-        return "Child"
-    elif (int(age) <= 21):
-        return "Adolescent"
-    elif (int(age) <= 35):
-        return "Young Adult"
-    elif (int(age) <= 64):
-        return "Adult"
-    else:
-        return "Eldery"
 
 def get_gender_label(gender):
-
     if (gender == "M"):
         return "Male"
     elif (gender == "F"):
@@ -73,7 +40,6 @@ def get_gender_label(gender):
         return "Other"
 
 def get_race_label(race):
-
     race = race.replace("\r","").replace("\n","")
 
     if (race == "W"):
@@ -92,41 +58,8 @@ def get_race_label(race):
     else:
         return "Other"
 
-def fix_crime_description (crime_description):
-
-    return crime_description.title()\
-        .replace("\"","")\
-        .replace(" Oth 0007=02","")\
-        .replace("0060","")\
-        .replace("($400 & Over","($400 & Over)")\
-        .replace("Crm Agnst Chld","Crime Against Child")\
-        .replace("Excpt - Guns - Fowl - Livestk - Prod0036","") \
-        .replace("Beastiality; Crime Against Nature Sexual Asslt With Anim0065", "Bestiality; Crime Against Nature Sexual Assault With Animals") \
-        .replace("unlawful(Inc Mutual Consent; Penetration W/ Frgn Obj0059", "; Unlawful(Including Mutual Consent); Penetration with Foreign Object") \
-        .replace("0060", "") \
-        .replace(" All Church Vandalisms) 0114","All Church Vandalism")
-
-def fix_weapon_description (weapon_description):
-
-    return weapon_description.title()\
-        .replace("\"","")\
-        .replace("6Inches","6 Inches")\
-        .replace("Strong-Arm (Hands -  Fist -  Feet Or Bodily Force)","Strong Bodily Force")
-
-def classify(entry_data):
-
-    for word in entry_data[6].split(): # crime description
-        if (word.lower() in violent):
-            return "Violent Crime"
-        
-    for word in entry_data[8].split(): # weapon
-        if (word.lower() in weapons):
-            return "Violent Crime"
-        
-    return "Non-Violent Crime"
-
 with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as myFile:
-    file_content = myFile.readline().replace("\r","").replace("\n","") #+ ", Classification" # first line
+    file_content = myFile.readline().replace("\r","").replace("\n","") # first line
 
     labels = file_content.split(',')
     print(labels)
@@ -139,54 +72,15 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
 
         entry_data = entry.split(',')
 
-        if (not(entry_data[9] == "" or entry_data[10] == "" or entry_data[11] == "")):
 
-            # Label Date January to December
-            date_label = get_date_label(entry_data[1])
-            #print (entry_data[1] + " => " + date_label)
+        output = "\n" + entry_data[0] + "," + entry_data[1] + "," + get_time_label(entry_data[2]) + "," + entry_data[3] + "," \
+                 + entry_data[5] + "," + entry_data[7] + "," + entry_data[9] + "," + entry_data[11] + "," + get_gender_label(entry_data[12]) + "," \
+                 + get_race_label(entry_data[13])
 
-            # Label Time Occurred
-            time_label = get_time_label(entry_data[2])
-            #print (entry_data[2] + " => " + time_label)
+        file_content += output
 
-            # Correct Case Crime description
-            crime_description = fix_crime_description(entry_data[6])
-            #print (crime_description)
-
-            # Correct Weapon Description
-            weapon_description = fix_weapon_description(entry_data[8])
-            #print (weapon_description)
-
-            # Classify Violent/Non-Violent
-            #classification = classify(entry_data)
-            #print (classification)
-
-            # Label Victim's Age
-            age_label =  get_age_label(entry_data[9])
-            #print (entry_data[9] + " => " + age_label)
-
-            # Label Victim's Gender
-            gender_label = get_gender_label(entry_data[10])
-            #print (entry_data[10] + " => " + gender_label)
-
-            # Label Victim's Race
-            race_label = get_race_label(entry_data[11])
-            #print(entry_data[11] + " => " + race_label)
-
-            output = "\n" + entry_data[0] + "," + date_label + "," + time_label + "," + entry_data[3] + "," + entry_data[4] + "," \
-                     + entry_data[5] + "," + crime_description + "," + entry_data[7] + "," + weapon_description + "," \
-                     + age_label + "," + gender_label  + "," + race_label #+ "," + classification
-
-
-            file_content += output
-
-            print("<OUTPUT => " + output[1:])
-            counter_in += 1
-
-        else:
-            #print("str(entry_data))
-            print("<OUTPUT => Entry filtered out due to missing information!")
-            counter_out += 1
+        print("<OUTPUT => " + output[1:])
+        counter_in += 1
 
 # Save to disk
 with open (path + "output.csv", 'w') as file:
