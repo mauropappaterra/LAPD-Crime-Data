@@ -100,7 +100,10 @@ def fix_crime_description (crime_description):
         .replace("0060","")\
         .replace("($400 & Over","($400 & Over)")\
         .replace("Crm Agnst Chld","Crime Against Child")\
-        .replace("Excpt - Guns - Fowl - Livestk - Prod0036","")\
+        .replace("Excpt - Guns - Fowl - Livestk - Prod0036","") \
+        .replace("Beastiality; Crime Against Nature Sexual Asslt With Anim0065", "Bestiality; Crime Against Nature Sexual Assault With Animals") \
+        .replace("unlawful(Inc Mutual Consent; Penetration W/ Frgn Obj0059", "; Unlawful(Including Mutual Consent); Penetration with Foreign Object") \
+        .replace("0060", "") \
         .replace(" All Church Vandalisms) 0114","All Church Vandalism")
 
 def fix_weapon_description (weapon_description):
