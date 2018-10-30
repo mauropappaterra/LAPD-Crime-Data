@@ -5,16 +5,21 @@ import time
 import sys
 from random import *
 
+# example executions:
+# > python samples.py "" 10000 C
+# > python samples.py "Desktop/samples/" 1000000 W
+
 # Ask user how many samples to create and path to save file
-if (len(sys.argv) == 1):
-    size = input("\nEnter no. of samples to create:")
-    path = input("\nEnter path to save .csv file:")
+if (len(sys.argv) <= 3):
+    path = input("\nEnter path to save .csv file: ")
+    size = input("\nEnter no. of samples to create: ")
+    mode = input("\nEnter 'C' for crime with missing weapon\nEnter 'W' for weapon with missing crime\n")
 else:
     path = sys.argv[1]
     size = sys.argv[2]
+    mode = sys.argv[3]
 
-if (size!= ""):
-    print ("\nCreating " + size + " samples...\n")
+print ("\nCreating " + size + " samples...\n")
 
 size = int (size)
 
@@ -37,6 +42,50 @@ def get_area ():
 
     index = str(randint(1, 21))
     return index +","+area[index]
+
+def get_crime ():
+    crime = {'1':'331,Theft From Motor Vehicle - Grand ($400 And Over)', '2':'442,Shoplifting - Petty Theft ($950 & Under)', '3':'210,Robbery',
+            '4':'251,Shots Fired At Inhabited Dwelling','5':'740,Vandalism - Felony ($400 & Over; All Church Vandalisms)',
+            '6':'440,Theft Plain - Petty ($950 & Under)','7':'237,Child Neglect (See 300 W.i.c.)',
+            '8':'626,Intimate Partner - Simple Assault','9':'230,Assault With Deadly Weapon; Aggravated Assault',
+            '10':'901,Violation Of Restraining Order','11':'649,Document Forgery / Stolen Felony',
+            '12':'341,Theft-grand ($950.01 & Over)','13':'330,Burglary From Vehicle',
+            '14':'310,Burglary','15':'956,Letters; Lewd','16':'745,Vandalism - Misdeameanor ($399 Or Under)',
+            '17':'510,Vehicle - Stolen','18':'900,Violation Of Court Order','19':'930,Criminal Threats - No Weapon Displayed',
+            '20':'753,Discharge Firearms/shots Fired','21':'220,Attempted Robbery','22':'320,Burglary; Attempted',
+            '23':'110,Criminal Homicide','24':'888,Trespassing','25':'122,Rape; Attempted','26':'623,Battery Police (Simple)',
+            '27':'121,Rape; Forcible','28':'420,Theft From Motor Vehicle - Petty ($950 & Under)','29':'946,Other Miscellaneous Crime',
+            '30':'860,Battery With Sexual Contact','31':'520,Vehicle - Attempt Stolen','32':'951,Defrauding Innkeeper/theft Of Services; $400 & Under',
+            '33':'910,Kidnapping','34':'933,Prowler','35':'350,Theft; Person','36':'813,Child Annoying (17yrs & Under)','37':'438,Reckless Driving',
+            '38':'410,Burglary From Vehicle; Attempted','39':'437,Resisting Arrest','40':'660,Counterfeit','41':'928,Threatening Phone Calls/letters',
+            '42':'625,Other Assault','43':'648,Arson','44':'343,Shoplifting-grand Theft ($950.01 & Over','45':'433,Driving Without Owner Consent (Dwoc)',
+            '46':'761,Brandish Weapon','47':'886,Disturbing The Peace','48':'351,Purse Snatching','49':'354,Theft Of Identity',
+            '50':'627,Child Abuse (Physical) - Simple Assault','51':'666,Bunco; Attempt','52':'474,Theft; Coin Machine - Petty ($950 & Under)',
+            '53':'820,Oral Copulation','54':'755,Bomb Scare','55':'662,Bunco; Grand Theft','56':'421,Theft From Motor Vehicle - Attempt',
+            '57':'821,Sodomy/sexual Contact B/w Penis Of One Pers To Anus Oth','58':'850,Indecent Exposure','59':'347,Grand Theft / Insurance Fraud',
+            '60':'932,Peeping Tom','61':'439,False Police Report','62':'664,Bunco; Petty Theft','63':'441,Theft Plain - Attempt',
+            '64':'235,Child Abuse (Physical) - Aggravated Assault','65':'943,Cruelty To Animals','66':'436,Lynching - Attempted',
+            '67':'950,Defrauding Innkeeper/theft Of Services; Over $400','68':'668,Embezzlement; Grand Theft ($950.01 & Over)','69':'810,Sex; Unlawful',
+            '70':'471,Till Tap - Petty ($950 & Under)','71':'763,Stalking','72':'487,Boat - Stolen',
+            '73':'812,Crm Agnst Chld (13 Or Under) (14-15 & Susp 10 Yrs Older)','74':'236,Intimate Partner - Aggravated Assault',
+            '75':'434,False Imprisonment','76':'231,Assault With Deadly Weapon On Police Officer','77':'815,Sexual Pentration With A Foreign Object',
+            '78':'670,Embezzlement; Petty Theft ($950 & Under)','79':'661,Unauthorized Computer Access','80':'949,Illegal Dumping',
+            '81':'622,Battery On A Firefighter','82':'443,Shoplifting - Attempt','83':'345,Dishonest Employee - Grand Theft','84':'480,Bike - Stolen',
+            '85':'762,Lewd Conduct','86':'805,Pimping','87':'647,Throwing Object At Moving Vehicle','88':'920,Kidnapping - Grand Attempt',
+            '89':'922,Child Stealing','90':'870,Child Abandonment','91':'654,Credit Cards; Fraud Use ($950 & Under','92':'475,Theft; Coin Machine - Attempt',
+            '93':'940,Extortion','94':'450,Theft From Person - Attempt','95':'954,Contributing','96':'653,Credit Cards; Fraud Use ($950.01 & Over)',
+            '97':'352,Pickpocket','98':'756,Weapons Possession/bombing','99':'473,Theft; Coin Machine - Grand ($950.01 & Over)',
+            '100':'902,Violation Of Temporary Restraining Order','101':'865,Drugs; To A Minor','102':'880,Disrupt School','103':'451,Purse Snatching - Attempt',
+            '104':'840,Bestiality; Crime Against Nature Sexual Assault With Animals','105':'806,Pandering','106':'470,Till Tap - Grand Theft ($950.01 & Over)',
+            '107':'353,Drunk Roll','108':'890,Failure To Yield','109':'444,Dishonest Employee - Petty Theft','110':'903,Contempt Of Court',
+            '111':'250,Shots Fired At Moving Vehicle; Train Or Aircraft','112':'924,Telephone Property - Damage','113':'651,Document Worthless ($200.01 & Over)',
+            '114':'944,Conspiracy','115':'452,Pickpocket; Attempt','116':'435,Lynching','117':'815,Sexual Penetration W/foreign Object',
+            '118':'810,Sex; Unlawful (Including Mutual Consent); Penetration with Foreign Object','119':'956,Letters; Lewd  -  Telephone Calls; Lewd',
+            '120':'942,Bribery','121':'446,Petty Theft - Auto Repair','122':'349,Grand Theft / Auto Repair','123':'113,Manslaughter; Negligent',
+            '124':'472,Till Tap - Attempt','125':'652,Document Worthless ($200 & Under)','126':'948,Bigamy','127':'882,Inciting A Riot',
+            '128':'453,Drunk Roll - Attempt'}
+
+    return crime[str(randint(1, 128))]
 
 def get_weapon ():
     weapons = {'1':'101,Revolver','2':'102,Hand Gun','3':'103,Rifle','4':'104,Shotgun','5':'105,Sawed Off Rifle/shotgun'
@@ -89,17 +138,39 @@ sample_index = 1
 start = time.clock() # start clock
 
 while (sample_index <= size):
-    new_sample = get_dr_number(sample_index) + "," + get_date() + "," + get_time() + "," + get_area() + ",,," + get_weapon() + "," +get_age() + "," +get_gender() + "," +get_race()
+    new_sample = get_dr_number(sample_index) + "," + get_date() + "," + get_time() + "," + get_area() + ","
+
+    if (mode == 'C'):
+        new_sample += get_crime() + ",,,"
+    else:
+        new_sample += ",," + get_weapon() + ","
+
+    new_sample += get_age() + "," + get_gender() + "," + get_race() +","
+
     file_content += new_sample + "\n"
 
     print("=> " + new_sample)
 
     sample_index += 1
 
+name = ""
+
+if (mode == 'C'):
+    name = "samples_C"
+else:
+    name = "samples_W"
+
 # Save to disk
-with open (path + "samples.csv", 'w') as file:
+with open (path + name + ".csv", 'w') as file:
     file.write (file_content)
 
 # Print in Console
 print ("\n::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::\nData Sampling Completed in " + str(round((time.clock() - start),2)) + " seconds!")
-print ("\nTotal Samples created: " + str (size))
+
+if (mode == 'C'):
+    print("\nSample Mode: With crime codes missing weapon code")
+else:
+    print("\nSample Mode: With weapon codes missing crime code")
+
+
+print("Total Samples created: " + str(size))
