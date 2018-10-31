@@ -94,25 +94,25 @@ def filter_data(entry_data):
     if not (entry_data[12] == "M" or entry_data[12] == "F"):
         return False
 
-    area = int(entry_data[5])
+    premise = int(entry_data[5])
 
-    if (area >= 160 and area <= 190):
+    if (premise >= 160 and premise <= 190):
         return False
-    elif (area >= 260 and area <= 290):
+    elif (premise >= 260 and premise <= 290):
         return False
-    elif (area >= 310 and area <= 390):
+    elif (premise >= 310 and premise <= 390):
         return False
-    elif (area >= 430 and area <= 490):
+    elif (premise >= 430 and premise <= 490):
         return False
-    elif (area >= 540 and area <= 590):
+    elif (premise >= 540 and premise <= 590):
         return False
-    elif (area >= 630 and area <= 690):
+    elif (premise >= 630 and premise <= 690):
         return False
-    elif (area >= 750 and area <= 780):
+    elif (premise >= 750 and premise <= 780):
         return False
 
-    if (get_age_label(entry_data[11]) == "Child" or get_age_label(entry_data[11]) == "Elder"):
-        return False
+    #if (get_age_label(entry_data[11]) == "Child" or get_age_label(entry_data[11]) == "Elder"):
+        #return False
 
     crimes = [624, 626, 210, 230, 930, 220, 860,121]
     if (not int(entry_data[5]) in crimes):
