@@ -36,7 +36,6 @@ def get_time_label(time):
     elif (len(time) == 1):
         time = '0' + time + '00'
 
-    #return time[:2]
     if (int(time) < 600):
         return "Night"
     elif (600 <= int(time) and int(time) < 1200):
@@ -48,7 +47,6 @@ def get_time_label(time):
     else:
         return "Night"
 
-
 def get_age_label(age):
     if (int(age) <= 12):
         return "Child"
@@ -59,7 +57,7 @@ def get_age_label(age):
     elif (int(age) <= 64):
         return "Adult"
     else:
-        return "Eldery"
+        return "Elder"
 
 def get_gender_label(gender):
     if (gender == "M"):
@@ -111,6 +109,9 @@ def filter_data(entry_data):
     elif (area >= 630 and area <= 690):
         return False
     elif (area >= 750 and area <= 780):
+        return False
+
+    if (get_age_label(entry_data[11]) == "Child" or get_age_label(entry_data[11]) == "Elder"):
         return False
 
     return True
