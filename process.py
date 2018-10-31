@@ -24,12 +24,6 @@ if (path!= ""):
 counter_in = 0
 counter_out = 0
 
-MAX = 10000
-counter_hispanic = MAX
-counter_black = MAX
-counter_caucasian = MAX
-counter_other = MAX
-
 start = time.clock() # start clock
 filter = not(filter == "F") # False for filter, True for unfiltered
 file_content = ""
@@ -120,37 +114,19 @@ def filter_data(entry_data):
     if (get_age_label(entry_data[11]) == "Child" or get_age_label(entry_data[11]) == "Elder"):
         return False
 
-    codes = [624, 626, 210, 230, 930, 220, 860,121]
-    if (not entry_data[11] in codes):
+    crimes = [624, 626, 210, 230, 930, 220, 860,121]
+    if (not int(entry_data[5]) in crimes):
+        return False
+
+    #premise = [501, 101, 502, 102, 108, 203, 210, 103, 109, 122,721,121, 104]
+    #if (not int(entry_data[7]) in premise):
+        #return False
+
+    weapons = [400, 511, 500, 101, 109, 200, 207, 101, 106, 307, 302]
+    if (not int(entry_data[9]) in weapons):
         return False
 
     return True
-
-def even_out(entry_data):
-
-    global counter_hispanic
-    global counter_black
-    global counter_caucasian
-    global counter_other
-
-    if (get_race_label(entry_data[13]) == "Caucasian"):
-        if (counter_caucasian - 1 >= 0):
-            counter_caucasian -= 1
-            return True
-    elif (get_race_label(entry_data[13]) == "African American"):
-        if (counter_black - 1 >= 0):
-            counter_black -= 1
-            return True
-    elif (get_race_label(entry_data[13]) == "Hispanic/Latino"):
-        if (counter_hispanic - 1 >= 0):
-            counter_hispanic -= 1
-            return True
-    elif (get_race_label(entry_data[13]) == "Other"):
-        if (counter_other - 1 >= 0):
-            counter_other -= 1
-            return True
-
-    return False
 
 with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as myFile:
     labels = myFile.readline().replace("\r","").replace("\n","").split(',') # first line
@@ -169,7 +145,7 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
 
         entry_data = entry.split(',')
 
-        if (filter or filter_data(entry_data) and even_out(entry_data)):
+        if (filter or filter_data(entry_data)):
 
             output = "\n" + entry_data[0] + "," + get_date_label(entry_data[1]) + "," + get_time_label(entry_data[2]) + "," + entry_data[3] + "," \
                      + entry_data[5] + "," + entry_data[7] + "," + entry_data[9] + "," + get_age_label(entry_data[11]) + "," + get_gender_label(entry_data[12]) + "," \
@@ -181,7 +157,7 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
             counter_in += 1
 
         else:
-            print("<OUTPUT => Entry filtered out due to missing information / low repetition / evened out !")
+            print("<OUTPUT => Entry filtered out due to missing information / low repetition!")
             counter_out += 1
 
 # Save to disk
@@ -194,8 +170,3 @@ print ("\nTotal entries read: " + str(counter_in + counter_out))
 if (not filter):
     print("\n-------------------------\nTotal entries added -> " + str(counter_in))
     print ("Total entries filtered out -> " + str(counter_out))
-
-print("Hispanics = " + str(counter_hispanic))
-print("Caucasian = " + str(counter_caucasian))
-print("African American = " + str(counter_black))
-print("Other = " + str(counter_other))
