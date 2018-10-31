@@ -53,13 +53,6 @@ def get_race_label(race):
         return "Caucasian"
     elif (race == "B"):
         return "African American"
-    elif (race == "A" or race == "C" or race == "J" or race == "K" or race == "L"
-          or race == "V" or race == "Z" or race == "F" or race == "D"):
-        return "Asian"
-    elif (race == "I"):
-        return "Native American"
-    elif (race == "G" or race == "P" or race == "S" or race == "U"):
-        return "Pacific Islander"
     elif (race == "H"):
         return "Hispanic/Latino"
     else:
