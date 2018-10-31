@@ -64,10 +64,33 @@ def get_date_label(date):
 
     return months[date[:2].replace("0", "").replace("/", "")]
 
-def check_missing(entry_data):
-    return not(entry_data[0] == "" or entry_data[1] == "" or entry_data[2] == "" or entry_data[3] == "" or
+def filter_data(entry_data):
+    if (entry_data[0] == "" or entry_data[1] == "" or entry_data[2] == "" or entry_data[3] == "" or
             entry_data[5]  == "" or entry_data[7] == "" or entry_data[9] == "" or entry_data[11] == "" or
-            entry_data[12] == "" or entry_data[13] == "")
+            entry_data[12] == "" or entry_data[13] == ""):
+        return False
+
+    if not (entry_data[12] == "M" or entry_data[12] == "F"):
+        return False
+
+    area = int(entry_data[5])
+
+    if (area >= 160 and area <= 190):
+        return False
+    elif (area >= 260 and area <= 290):
+        return False
+    elif (area >= 310 and area <= 390):
+        return False
+    elif (area >= 430 and area <= 490):
+        return False
+    elif (area >= 540 and area <= 590):
+        return False
+    elif (area >= 630 and area <= 690):
+        return False
+    elif (area >= 750 and area <= 780):
+        return False
+
+    return True
 
 with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as myFile:
     labels = myFile.readline().replace("\r","").replace("\n","").split(',') # first line
@@ -86,7 +109,7 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
 
         entry_data = entry.split(',')
 
-        if (filter or check_missing(entry_data)):
+        if (filter or filter_data(entry_data)):
 
             output = "\n" + entry_data[0] + "," + get_date_label(entry_data[1]) + "," + get_time_label(entry_data[2]) + "," + entry_data[3] + "," \
                      + entry_data[5] + "," + entry_data[7] + "," + entry_data[9] + "," + entry_data[11] + "," + get_gender_label(entry_data[12]) + "," \
@@ -97,7 +120,7 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
             print("<OUTPUT => " + output[1:])
             counter_in += 1
         else:
-            print("<OUTPUT => Entry filtered out due to missing information!")
+            print("<OUTPUT => Entry filtered out due to missing information or low !")
             counter_out += 1
 
 # Save to disk
