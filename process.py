@@ -38,6 +38,19 @@ def get_time_label(time):
 
     return time[:2]
 
+
+def get_age_label(age):
+    if (int(age) <= 12):
+        return "Child"
+    elif (int(age) <= 21):
+        return "Adolescent"
+    elif (int(age) <= 35):
+        return "Young Adult"
+    elif (int(age) <= 64):
+        return "Adult"
+    else:
+        return "Eldery"
+
 def get_gender_label(gender):
     if (gender == "M"):
         return "Male"
@@ -112,7 +125,7 @@ with codecs.open(path + "LAPD Modified Dataset.csv", 'r', encoding='utf8') as my
         if (filter or filter_data(entry_data)):
 
             output = "\n" + entry_data[0] + "," + get_date_label(entry_data[1]) + "," + get_time_label(entry_data[2]) + "," + entry_data[3] + "," \
-                     + entry_data[5] + "," + entry_data[7] + "," + entry_data[9] + "," + entry_data[11] + "," + get_gender_label(entry_data[12]) + "," \
+                     + entry_data[5] + "," + entry_data[7] + "," + entry_data[9] + "," + get_age_label(entry_data[11]) + "," + get_gender_label(entry_data[12]) + "," \
                      + get_race_label(entry_data[13])
 
             file_content += output
