@@ -36,7 +36,7 @@ def get_time_label(time):
     elif (len(time) == 1):
         time = '0' + time + '00'
 
-    return time
+    return time[:2]
 
 def get_gender_label(gender):
     if (gender == "M"):
