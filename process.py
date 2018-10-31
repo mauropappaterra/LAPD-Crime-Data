@@ -36,7 +36,17 @@ def get_time_label(time):
     elif (len(time) == 1):
         time = '0' + time + '00'
 
-    return time[:2]
+    #return time[:2]
+    if (int(time) < 600):
+        return "Night"
+    elif (600 <= int(time) and int(time) < 1200):
+        return "Morning"
+    elif (1200 <= int(time) and int(time) < 1700):
+        return "Afternoon"
+    elif (1700 <= int(time) and int(time) < 2000):
+        return "Evening"
+    else:
+        return "Night"
 
 
 def get_age_label(age):
